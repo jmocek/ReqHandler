@@ -1,5 +1,6 @@
-from module_file.module_file import *
+from module_file.module_db_operations import *
 import pytest
+import os.path
 
 
 @pytest.fixture
