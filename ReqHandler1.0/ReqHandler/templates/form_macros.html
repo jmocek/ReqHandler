@@ -1,0 +1,126 @@
+{% macro render_field(field) %}
+    <tr {% if field.errors %} class="error" {% endif %}>
+        <td>{{ field.label }}</td>
+        <td>{{ field(**kwargs)|safe }}</td>
+    </tr>
+    <tr class="error" >
+        <td></td>
+        <td>
+            <ul>
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+{% endmacro %}
+
+{% macro render_req(reqs) %}
+
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 2px;
+
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+
+<table>
+  <tr>
+    <th>NID</th>
+    <th>Version</th>
+    <th width="30%">Text</th>
+    <th>Author</th>
+    <th>Added</th>
+    <th>Product Version</th>
+    <!--<th>Links</th>-->
+    <!--<th>Baseline</th>-->
+  </tr>
+
+                      {% if reqs %}
+
+                        {% for req in reqs %}
+                           <tr>
+                               <td>{{req.nid}}</td>
+                               <td>{{req.version}}</td>
+                               <td>{{req.text}}</td>
+                               <td>{{req.author}}</td>
+                               <td>{{req.time}}</td>
+                               <td>{{req.product_version}}</td>
+                               <!--<td>{{req["links"]}}</td>-->
+                               <!--<td>{{req["baseline"]}}</td>-->
+
+                           </tr>
+
+                        {% endfor %}
+
+
+
+                      {% endif %}
+                                  </table>
+{% endmacro %}
+
+{% macro render_user(user) %}
+
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 2px;
+
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+
+<table>
+  <tr>
+    <th>NID</th>
+    <th>Version</th>
+    <th width="30%">Text</th>
+    <th>Author</th>
+    <th>Added</th>
+    <th>Product Version</th>
+    <!--<th>Links</th>-->
+    <!--<th>Baseline</th>-->
+  </tr>
+
+{% for req in user.requirements %}
+                           <tr>
+                               <td>{{req.nid}}</td>
+                               <td>{{req.version}}</td>
+                               <td>{{req.text}}</td>
+                               <td>{{req.author}}</td>
+                               <td>{{req.time}}</td>
+                               <td>{{req.product_version}}</td>
+                               <!--<td>{{req["links"]}}</td>-->
+                               <!--<td>{{req["baseline"]}}</td>-->
+
+                           </tr>
+                {% else %}
+                    <li>This user has not added any bookmarks yet.</li>
+                {% endfor %}
+
+
+
+                                  </table>
+{% endmacro %}

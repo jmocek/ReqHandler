@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_req %}
+
+{% block title %}
+Thermos -- Add a URL
+{%  endblock %}
+
+{% block content %}
+
+<body>
+
+<section>
+        <h1>Requirement specification</h1>
+
+            <article>
+                <p>
+
+
+                    {{ render_req(reqs) }}
+
+                </p>
+
+            </article>
+        </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}
