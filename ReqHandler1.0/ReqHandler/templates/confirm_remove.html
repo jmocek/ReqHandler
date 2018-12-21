@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_req %}
+
+{% block title %}
+ReqHandler -- remove requirement {{ requirement.nid }}
+{%  endblock %}
+
+{% block content %}
+    <section>
+        <h1 style="clear:both">Confirm Delete</h1>
+
+       {{ render_req(requirement) }}
+
+
+        <form action="" method="post">
+            <span style="color:red" >Are you sure you want to remove this requirement?</span>
+            <br><br>
+            <a href="{{ url_for('req') }}">
+                <button type="button">No, take me out of here</button>
+            </a>
+            <button type="submit">Yes, delete it</button>
+        </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

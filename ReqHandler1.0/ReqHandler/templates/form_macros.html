@@ -1,18 +1,18 @@
 {% macro render_field(field) %}
-    <tr {% if field.errors %} class="error" {% endif %}>
-        <td>{{ field.label }}</td>
-        <td>{{ field(**kwargs)|safe }}</td>
-    </tr>
-    <tr class="error" >
-        <td></td>
-        <td>
-            <ul>
-                {% for error in field.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </td>
-    </tr>
+<tr {% if field.errors %} class="error" {% endif %}>
+    <td>{{ field.label }}</td>
+    <td>{{ field(**kwargs)|safe }}</td>
+</tr>
+<tr class="error">
+    <td></td>
+    <td>
+        <ul>
+            {% for error in field.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </td>
+</tr>
 {% endmacro %}
 
 {% macro render_req(reqs) %}
@@ -34,41 +34,48 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
+
 </style>
 
 <table>
-  <tr>
-    <th>NID</th>
-    <th>Version</th>
-    <th width="30%">Text</th>
-    <th>Author</th>
-    <th>Added</th>
-    <th>Product Version</th>
-    <!--<th>Links</th>-->
-    <!--<th>Baseline</th>-->
-  </tr>
+    <tr>
+        <th>NID</th>
+        <th>Version</th>
+        <th width="30%">Text</th>
+        <th>Author</th>
+        <th>Added</th>
+        <th>Product Version</th>
+        <th>Action</th>
+        <!--<th>Links</th>-->
+        <!--<th>Baseline</th>-->
+    </tr>
 
-                      {% if reqs %}
+    {% if reqs %}
 
-                        {% for req in reqs %}
-                           <tr>
-                               <td>{{req.nid}}</td>
-                               <td>{{req.version}}</td>
-                               <td>{{req.text}}</td>
-                               <td>{{req.author}}</td>
-                               <td>{{req.time}}</td>
-                               <td>{{req.product_version}}</td>
-                               <!--<td>{{req["links"]}}</td>-->
-                               <!--<td>{{req["baseline"]}}</td>-->
+    {% for req in reqs %}
+    <tr>
+        <td>{{req.nid}}</td>
+        <td>{{req.version}}</td>
+        <td>{{req.text}}</td>
+        <td>{{req.author}}</td>
+        <td>{{req.time}}</td>
+        <td>{{req.product_version}}</td>
+        <td>
+            <p><a href="{{ url_for('edit', nid_id=req.id) }}">edit</a></p>
+            <p><a href="{{ url_for('remove_req', nid_id=req.id) }}">remove</a></p>
+        </td>
 
-                           </tr>
+        <!--<td>{{req["links"]}}</td>-->
+        <!--<td>{{req["baseline"]}}</td>-->
 
-                        {% endfor %}
+    </tr>
+
+    {% endfor %}
 
 
-
-                      {% endif %}
-                                  </table>
+    {% endif %}
+</table>
 {% endmacro %}
 
 {% macro render_user(user) %}
@@ -90,37 +97,43 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
+
+
 </style>
 
 <table>
-  <tr>
-    <th>NID</th>
-    <th>Version</th>
-    <th width="30%">Text</th>
-    <th>Author</th>
-    <th>Added</th>
-    <th>Product Version</th>
-    <!--<th>Links</th>-->
-    <!--<th>Baseline</th>-->
-  </tr>
+    <tr>
+        <th>NID</th>
+        <th>Version</th>
+        <th width="30%">Text</th>
+        <th>Author</th>
+        <th>Added</th>
+        <th>Product Version</th>
+        <th>Action</th>
+        <!--<th>Links</th>-->
+        <!--<th>Baseline</th>-->
+    </tr>
 
-{% for req in user.requirements %}
-                           <tr>
-                               <td>{{req.nid}}</td>
-                               <td>{{req.version}}</td>
-                               <td>{{req.text}}</td>
-                               <td>{{req.author}}</td>
-                               <td>{{req.time}}</td>
-                               <td>{{req.product_version}}</td>
-                               <!--<td>{{req["links"]}}</td>-->
-                               <!--<td>{{req["baseline"]}}</td>-->
+    {% for req in user.requirements %}
+    <tr>
+        <td>{{req.nid}}</td>
+        <td>{{req.version}}</td>
+        <td>{{req.text}}</td>
+        <td>{{req.author}}</td>
+        <td>{{ moment(req.time).format('MMMM Do YYYY, h:mm:ss a') }}</td>
+        <td>{{req.product_version}}</td>
+        <td>
+            <p><a href="{{ url_for('edit', nid_id=req.id) }}">edit</a></p>
+            <p><a href="{{ url_for('remove_req', nid_id=req.id) }}">remove</a></p>
+        </td>
+        <!--<td>{{req["links"]}}</td>-->
+        <!--<td>{{req["baseline"]}}</td>-->
 
-                           </tr>
-                {% else %}
-                    <li>This user has not added any bookmarks yet.</li>
-                {% endfor %}
+    </tr>
+    {% else %}
+    <li>This user has not added any bookmarks yet.</li>
+    {% endfor %}
 
 
-
-                                  </table>
+</table>
 {% endmacro %}

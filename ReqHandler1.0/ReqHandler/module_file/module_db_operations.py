@@ -5,8 +5,10 @@ from ReqHandler.module_file.models import Requirement, User
 
 class DataBaseInputGenerator:
 
-    def __init__(self, version, text, product_version, baseline, links, author):
-        self._nid = self.get_last_nid() + 1
+    def __init__(self, nid, version, text, product_version, baseline, links, author):
+        if nid is None:
+            nid = self.get_last_nid() + 1
+        self._nid = nid
         if version is None:
             version = 1
         self._version = version

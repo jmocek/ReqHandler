@@ -2,7 +2,7 @@
 {% from "form_macros.html" import render_req %}
 
 {% block title %}
-Thermos -- Add a URL
+ReqHandler -- view requirements
 {%  endblock %}
 
 {% block content %}
@@ -10,19 +10,19 @@ Thermos -- Add a URL
 <body>
 
 <section>
-        <h1>Requirement specification</h1>
+    <h1>Requirement specification</h1>
 
-            <article>
-                <p>
+    <article>
+        <p>
 
 
-                    {{ render_req(reqs) }}
+            {{ render_req(reqs) }}
 
-                </p>
+        </p>
 
-            </article>
-        </form>
-    </section>
+    </article>
+    </form>
+</section>
 {% endblock %}
 
 {% block sidebar %}

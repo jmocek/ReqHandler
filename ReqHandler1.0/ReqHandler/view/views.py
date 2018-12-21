@@ -28,7 +28,8 @@ def add():
     if form.validate_on_submit():
         text = form.text.data
         product_version = form.product_version.data
-        dbinput = DataBaseInputGenerator(version=None,
+        dbinput = DataBaseInputGenerator(nid=None,
+                                         version=None,
                                          text=text,
                                          product_version=product_version,
                                          baseline=None,
@@ -55,13 +56,50 @@ def req():
         # Get highest req version
         version = db.session.query(func.max(Requirement.version)).filter_by(nid=nid)
         requirement = Requirement.query.filter_by(nid=nid).filter_by(version=version).first()
-        reqs.append(requirement)
+        if requirement.is_removed is False:
+            reqs.append(requirement)
     return render_template('req.html', reqs=reqs)
 
 
-@app.route('/edit')
-def edit():
-    return render_template('edit.html')
+@app.route('/edit/<int:nid_id>', methods=['GET', 'POST'])
+@login_required
+def edit(nid_id):
+    requirement = Requirement.query.get_or_404(nid_id)
+    form = RequirementAddForm(obj=requirement)
+    if form.validate_on_submit():
+        form.populate_obj(requirement)
+        text = form.text.data
+        product_version = form.product_version.data
+        nid = requirement.nid
+        version = requirement.version + 1
+        dbinput = DataBaseInputGenerator(nid=nid,
+                                         version=version,
+                                         text=text,
+                                         product_version=product_version,
+                                         baseline=None,
+                                         links=None,
+                                         author=current_user)
+        dbinput.add_req()
+        flash("Stored '{}'".format(text))
+        return redirect(url_for('user', username=current_user.username))
+    return render_template('edit.html', requirement=requirement, form=form)
+
+
+@app.route('/remove/<int:nid_id>', methods=['GET', 'POST'])
+@login_required
+def remove_req(nid_id):
+    # For macros compatiblity requirement shall be in a list object
+    reqs = []
+    requirement = Requirement.query.get_or_404(nid_id)
+    reqs.append(requirement)
+    if request.method == "POST":
+        requirement.is_removed = True
+        db.session.commit()
+        flash("Removed requirement ID:'{}'".format(requirement.nid))
+        return redirect(url_for('req'))
+    else:
+        flash("Please confirm removing the requirement.")
+    return render_template('confirm_remove.html', requirement=reqs, nolinks=True)
 
 
 @app.route('/find')

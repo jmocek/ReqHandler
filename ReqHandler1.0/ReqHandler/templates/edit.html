@@ -1,21 +1,30 @@
 {% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
 
 {% block title %}
-Thermos -- Add a URL
+Edit requirement with nid {{ requirement.nid }}
 {%  endblock %}
 
 {% block content %}
-    <section>
-        <h1>Edit requirement</h1>
+<section>
+    <h1>Edit requirement</h1>
 
-            <article>
-                <p>
-                   TBD
-                </p>
+    <form action="" method="post">
+        {{form.hidden_tag()}}
+        <table>
+            {{ render_field(form.text, size=50) }}
+            {{ render_field(form.product_version, size=50) }}
 
-            </article>
-        </form>
-    </section>
+            <tr class="submit">
+                <td></td>
+                <td>
+                    <button type="submit">Submit</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    </form>
+</section>
 {% endblock %}
 
 {% block sidebar %}

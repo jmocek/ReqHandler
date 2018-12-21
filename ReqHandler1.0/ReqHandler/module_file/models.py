@@ -11,6 +11,7 @@ class Requirement(db.Model):
     text = db.Column(db.String(1000))
     author = db.Column(db.String, db.ForeignKey('user.username'), nullable=False)
     time = db.Column(db.DateTime, default=datetime.utcnow)
+    is_removed = db.Column(db.Boolean, default=False)
     product_version = db.Column(db.Float)
     baseline = db.Column(db.String)
     links = db.Column(db.String)
