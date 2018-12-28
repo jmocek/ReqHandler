@@ -67,9 +67,8 @@ def export_file():
     :return:
     """
 
-    path = os.path.join(app.root_path)
-    file = path + "\\db.csv"
-    with open(file, 'r+', newline='') as csvfile:
+    path = os.path.join(app.root_path, "db.csv")
+    with open(path, 'r+', newline='') as csvfile:
         csvfile.truncate(0)
         fieldnames = ['nid', 'version', 'text', 'author', 'product', 'baseline', 'time', 'links', 'isremoved']
         writer = csv.DictWriter(csvfile, fieldnames)
@@ -95,16 +94,14 @@ def remove_file(filename):
     :param filename:
     :return:
     """
-    path = os.path.join(app.root_path)
-    file = path + "\\" + filename
-    os.remove(file)
+    path = os.path.join(app.root_path, filename)
+    os.remove(path)
 
 
 def get_params(filename):
     reqs = []
-    path = os.path.join(app.root_path)
-    file = path + "\\" + filename
-    with open(file, 'r', newline='') as csvfile:
+    path = os.path.join(app.root_path, filename)
+    with open(path, 'r', newline='') as csvfile:
         # Skip header:
         is_empty = csvfile.readline()
         if len(is_empty) == 0:
