@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+
+{% block title %}
+ReqHandler -- Export to CSV file
+{%  endblock %}
+
+{% block content %}
+    <section>
+        <h1>Export to CSV file</h1>
+        <form action="" method="post">
+            {{form.hidden_tag()}}
+            <table>
+                {{ render_field(form.filename, size=50) }}
+
+                <tr class="submit">
+                    <td></td>
+                    <td><button type="submit">Download</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

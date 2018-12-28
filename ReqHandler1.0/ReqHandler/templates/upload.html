@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+ReqHandler -- Import CSV file
+{%  endblock %}
+
+{% block content %}
+<section>
+    <h1>Select CSV file</h1>
+    <table>
+        <form method=post enctype=multipart/form-data>
+            <input type=file name=file>
+            <input type=submit value=Upload>
+        </form>
+
+
+        </tr>
+    </table>
+</section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

@@ -1,12 +1,10 @@
-from datetime import datetime
-from flask import Flask, render_template, request, flash, redirect, url_for
-from ReqHandler import app, db, login_manager
-from ReqHandler.form import RequirementAddForm, LoginForm, SignupForm
-from ReqHandler.module_file.module_db_operations import DataBaseInputGenerator
-from ReqHandler.module_file.models import User, Requirement
-from flask_login import login_required, login_user, logout_user, current_user
-from sqlalchemy.sql.expression import func
-from sqlalchemy import desc
+from flask import render_template, request, flash, redirect, url_for, send_from_directory
+from ReqHandler import login_manager
+from ReqHandler.view.form import RequirementAddForm, LoginForm, SignupForm, ExportForm
+from flask_login import login_required, login_user, logout_user
+from werkzeug.utils import secure_filename
+from ReqHandler.view.view_support import *
+import os
 
 
 @login_manager.user_loader
@@ -34,7 +32,8 @@ def add():
                                          product_version=product_version,
                                          baseline=None,
                                          links=None,
-                                         author=current_user)
+                                         author=current_user,
+                                         is_removed=None)
         dbinput.add_req()
         flash("Stored '{}'".format(text))
         return redirect(url_for('index'))
@@ -42,8 +41,8 @@ def add():
 
 
 @app.route('/req')
+@login_required
 def req():
-
     reqs = []
     # Pass only latest versions
     all_reqs = Requirement.query.all()
@@ -102,12 +101,8 @@ def remove_req(nid_id):
     return render_template('confirm_remove.html', requirement=reqs, nolinks=True)
 
 
-@app.route('/find')
-def find():
-    return render_template('find.html')
-
-
 @app.route('/user/<username>')
+@login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('user.html', user=user)
@@ -144,3 +139,59 @@ def signup():
         flash('Welcome, {}! Please login.'.format(user.username))
         return redirect(url_for('login'))
     return render_template("signup.html", form=form)
+
+
+@app.route('/export', methods=['GET', 'POST'])
+@login_required
+def export():
+    form = ExportForm()
+
+    if form.validate_on_submit():
+        filename = form.filename.data
+        export_file()
+        uploads = os.path.join(app.root_path)
+
+        return send_from_directory(directory=uploads, filename="db.csv", as_attachment=True,
+                                   attachment_filename=filename)
+    return render_template('export.html', form=form)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return render_template('upload.html')
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return render_template('upload.html')
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            flash('Successfully imported file ', filename)
+            return redirect(url_for('import_file',
+                                    filename=filename))
+    return render_template('upload.html')
+
+
+@app.route('/import/<filename>', methods=['GET', 'POST'])
+@login_required
+def import_file(filename):
+    if request.method == 'POST':
+        if verify_file(filename):
+            if import_from_file(filename):
+                flash('File imported successfully')
+                return redirect(url_for('req'))
+        elif verify_file(filename) is False:
+            flash('Incorrect file content')
+            return redirect(url_for('req'))
+        else:
+            flash('Empty file!')
+            return redirect(url_for('req'))
+
+    return render_template('import.html')

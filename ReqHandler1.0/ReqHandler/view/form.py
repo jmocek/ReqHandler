@@ -44,3 +44,7 @@ class SignupForm(Form):
     def validate_username(self, username_field):
         if User.query.filter_by(username=username_field.data).first():
             raise ValidationError('This username is already taken.')
+
+
+class ExportForm(Form):
+    filename = StringField('Enter file name: ', validators=[DataRequired(), Length(0, 100)])
