@@ -4,13 +4,15 @@ from flask_login import current_user
 from ReqHandler import db, app, ALLOWED_EXTENSIONS
 import csv
 from sqlalchemy.sql.expression import func
-from ReqHandler.module_file.models import Requirement, User
+from ReqHandler.module_file.models import Requirement, User, Product
 import os
+from ReqHandler.view.form import RequirementAddForm
+from wtforms.fields import StringField, PasswordField, BooleanField, SubmitField
 
 
 class DataBaseInputGenerator:
 
-    def __init__(self, nid, version, text, product_version, baseline, links, author, is_removed):
+    def __init__(self, nid, version, text, product_versions, baseline, links, author, is_removed):
         if nid is None:
             nid = self.get_last_nid() + 1
         self._nid = nid
@@ -18,7 +20,7 @@ class DataBaseInputGenerator:
             version = 1
         self._version = version
         self._text = text
-        self._product_version = product_version
+        self._product_versions = product_versions
         if baseline is None:
             baseline = "undefined"
         self._baseline = baseline
@@ -51,7 +53,6 @@ class DataBaseInputGenerator:
         requirement = Requirement(nid=self._nid,
                                   version=self._version,
                                   text=self._text,
-                                  product_version=self._product_version,
                                   baseline=self._baseline,
                                   user=self._author,
                                   links=self._links,
@@ -59,6 +60,11 @@ class DataBaseInputGenerator:
 
         db.session.add(requirement)
         db.session.commit()
+        for version in self._product_versions:
+            print("THYS IS VERSION: ", version)
+            pv = Product.query.filter_by(version=version).first()
+            requirement.product_version.append(pv)
+            db.session.commit()
 
 
 def export_file():
@@ -70,17 +76,22 @@ def export_file():
     path = os.path.join(app.root_path, "db.csv")
     with open(path, 'r+', newline='') as csvfile:
         csvfile.truncate(0)
-        fieldnames = ['nid', 'version', 'text', 'author', 'product', 'baseline', 'time', 'links', 'isremoved']
+        fieldnames = ['nid', 'version', 'text', 'author', 'product versions', 'baseline', 'time', 'links', 'isremoved']
         writer = csv.DictWriter(csvfile, fieldnames)
         writer.writeheader()
         requirements = db.session.query(Requirement).all()
         for req in requirements:
             print(req)
+            product_versions = ""
+            for pv in req.product_version:
+                product_versions += str(pv.version) + "+"
+            # truncate last separator
+            product_versions = product_versions[:-1]
             writer.writerow({'nid': req.nid,
                              'version': req.version,
                              'text': req.text,
                              'author': req.author,
-                             'product': req.product_version,
+                             'product versions': product_versions,
                              'baseline': req.baseline,
                              'time': req.time,
                              'links': req.links,
@@ -108,6 +119,7 @@ def get_params(filename):
             return 0
         for line in csvfile:
             pamlist = []
+            print(line)
             param_list = line.split('"')
             if len(param_list) == 3:
                 pamlist1 = param_list[0].split(',')[:-1]
@@ -133,7 +145,7 @@ def verify_file(filename):
         return 0
     for req in reqs:
         if len(req) != 9:
-            print('Incorrect params', req[8][:-2], req[0], req[1])
+            print('Incorrect params', req[8][:-2], req[0], req[1], "len: ", len(req))
             return False
 
         try:
@@ -156,10 +168,8 @@ def verify_file(filename):
             print('AUTHOR is too long')
             return False
 
-        try:
-            float(req[4])
-        except ValueError:
-            print('PRODUCT_VERSION is not a double')
+        if len(req[4]) < 1:
+            print('PRODUCT_VERSIONS not set')
             return False
 
         if req[5] != 'undefined':
@@ -186,22 +196,22 @@ def verify_file(filename):
 def import_from_file(filename):
 
     reqs = get_params(filename)
-
     for req in reqs:
         if req[8][:-2] == "True":
             is_removed = True
         else:
             is_removed = False
-
+        product_versions = req[4].split("+")
         dbinput = DataBaseInputGenerator(nid=None,
                                          version=None,
                                          text=req[2],
-                                         product_version=req[4],
                                          baseline=None,
                                          links=None,
+                                         product_versions=product_versions,
                                          author=current_user,
                                          is_removed=is_removed)
         dbinput.add_req()
+
     remove_file(filename)
 
     return True
@@ -210,3 +220,16 @@ def import_from_file(filename):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+def create_product_forms():
+    class Add(RequirementAddForm):
+        pass
+    existing_products = []
+    for product in Product.query.all():
+        name = "v" + str(product.version)
+        name = name.replace(".", "_")
+        setattr(Add, name, BooleanField(str(product.version)))
+        existing_products.append(name)
+
+    return Add, existing_products

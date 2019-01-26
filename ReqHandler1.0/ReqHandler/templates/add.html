@@ -12,7 +12,11 @@ Thermos -- Add a URL
             {{form.hidden_tag()}}
             <table>
                 {{ render_field(form.text, size=50) }}
-                {{ render_field(form.product_version, size=50) }}
+                <td>Choose product version:</td>
+                {% for name in products %}
+                    {{ render_field(form[name]) }}
+                 {% endfor %}
+                {{ render_field(form.product_version_new, size=50) }}
 
                 <tr class="submit">
                     <td></td>

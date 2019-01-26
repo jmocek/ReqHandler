@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_moment import Moment
 
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 ALLOWED_EXTENSIONS = set(['csv'])
 

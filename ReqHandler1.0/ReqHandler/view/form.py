@@ -1,18 +1,22 @@
 from flask_wtf import Form
 from wtforms.fields import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo, url, ValidationError
-from ReqHandler.module_file.models import User
+from ReqHandler.module_file.models import User, Product
 
 
 class RequirementAddForm(Form):
     text = StringField('Requirement text: ', validators=[DataRequired(), Length(0, 1000)])
-    product_version = StringField('Product version:', validators=[DataRequired()])
 
-    def validate_product_version(self, product_version_field):
-        try:
-            float(product_version_field.data)
-        except ValueError:
-            raise ValidationError('Product version shall be a dot separated float number or int')
+    product_version_new = StringField('Enter product version if not already added: ', validators=[Length(0, 1000)])
+
+    def validate_product_version_new(self, product_version_new_field):
+        if len(product_version_new_field.data) > 0:
+            try:
+                float(product_version_new_field.data)
+            except ValueError:
+                raise ValidationError('Product version shall be a dot separated float number or int')
+            if Product.query.filter_by(version=float(product_version_new_field.data)).first():
+                raise ValidationError('There is already that product version.')
 
 
 class LoginForm(Form):

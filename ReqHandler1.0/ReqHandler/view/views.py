@@ -4,6 +4,7 @@ from ReqHandler.view.form import RequirementAddForm, LoginForm, SignupForm, Expo
 from flask_login import login_required, login_user, logout_user
 from werkzeug.utils import secure_filename
 from ReqHandler.view.view_support import *
+from ReqHandler.module_file.models import Requirement, User, Product
 import os
 
 
@@ -21,15 +22,33 @@ def index():
 @app.route('/add', methods=['GET', 'POST'])
 @login_required
 def add():
-    form = RequirementAddForm()
-
+    product_versions = []
+    Add, existing_products = create_product_forms()
+    form = Add()
     if form.validate_on_submit():
         text = form.text.data
-        product_version = form.product_version.data
+        for name in existing_products:
+            for fieldname, data in form.data.items():
+                if fieldname == name:
+                    ischecked = data
+                    if ischecked:
+                        product_versions.append(float(name.replace("_", ".")[1:]))
+
+        product_version_new = form.product_version_new.data
+
+        if product_version_new:
+            db.session.add(Product(author=current_user.username, version=product_version_new))
+            db.session.commit()
+            product_versions.append(product_version_new)
+
+        if len(product_versions) == 0:
+            flash("Product version MUST be chosen")
+            return render_template('add.html', form=form, products=existing_products)
+
         dbinput = DataBaseInputGenerator(nid=None,
                                          version=None,
                                          text=text,
-                                         product_version=product_version,
+                                         product_versions=product_versions,
                                          baseline=None,
                                          links=None,
                                          author=current_user,
@@ -37,7 +56,7 @@ def add():
         dbinput.add_req()
         flash("Stored '{}'".format(text))
         return redirect(url_for('index'))
-    return render_template('add.html', form=form)
+    return render_template('add.html', form=form, products=existing_products)
 
 
 @app.route('/req')
@@ -57,6 +76,7 @@ def req():
         requirement = Requirement.query.filter_by(nid=nid).filter_by(version=version).first()
         if requirement.is_removed is False:
             reqs.append(requirement)
+    print("ALL: ", reqs)
     return render_template('req.html', reqs=reqs)
 
 
@@ -64,24 +84,47 @@ def req():
 @login_required
 def edit(nid_id):
     requirement = Requirement.query.get_or_404(nid_id)
-    form = RequirementAddForm(obj=requirement)
+    # Passed as a list so jinja macros can handle it
+    reqs = [requirement]
+    print("REG: ", reqs)
+    product_versions = []
+    Add, existing_products = create_product_forms()
+    form = Add(obj=requirement)
     if form.validate_on_submit():
         form.populate_obj(requirement)
         text = form.text.data
-        product_version = form.product_version.data
+        for name in existing_products:
+            for fieldname, data in form.data.items():
+                if fieldname == name:
+                    ischecked = data
+                    if ischecked:
+                        product_versions.append(float(name.replace("_", ".")[1:]))
+
+        product_version_new = form.product_version_new.data
+
+        if product_version_new:
+            db.session.add(Product(author=current_user.username, version=product_version_new))
+            db.session.commit()
+            product_versions.append(product_version_new)
+
+        if len(product_versions) == 0:
+            flash("Product version MUST be chosen")
+            return render_template('add.html', form=form, products=existing_products)
+
         nid = requirement.nid
         version = requirement.version + 1
         dbinput = DataBaseInputGenerator(nid=nid,
                                          version=version,
                                          text=text,
-                                         product_version=product_version,
+                                         product_versions=product_versions,
                                          baseline=None,
                                          links=None,
-                                         author=current_user)
+                                         author=current_user,
+                                         is_removed=None)
         dbinput.add_req()
         flash("Stored '{}'".format(text))
         return redirect(url_for('user', username=current_user.username))
-    return render_template('edit.html', requirement=requirement, form=form)
+    return render_template('edit.html', requirement=requirement, form=form, products=existing_products, reqs=reqs)
 
 
 @app.route('/remove/<int:nid_id>', methods=['GET', 'POST'])
@@ -145,7 +188,6 @@ def signup():
 @login_required
 def export():
     form = ExportForm()
-
     if form.validate_on_submit():
         filename = form.filename.data
         export_file()
@@ -185,6 +227,7 @@ def import_file(filename):
     if request.method == 'POST':
         if verify_file(filename):
             if import_from_file(filename):
+                print("FILENAME: .", filename)
                 flash('File imported successfully')
                 return redirect(url_for('req'))
         elif verify_file(filename) is False:

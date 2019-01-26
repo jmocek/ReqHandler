@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "form_macros.html" import render_field %}
+{% from "form_macros.html" import render_req %}
 
 {% block title %}
 Edit requirement with nid {{ requirement.nid }}
@@ -12,8 +13,15 @@ Edit requirement with nid {{ requirement.nid }}
     <form action="" method="post">
         {{form.hidden_tag()}}
         <table>
+                    <p>
+            {{ render_req(reqs) }}
+        </p>
             {{ render_field(form.text, size=50) }}
-            {{ render_field(form.product_version, size=50) }}
+                <td>Choose product version:</td>
+                {% for name in products %}
+                   <td> {{ render_field(form[name]) }} </td>
+                 {% endfor %}
+                {{ render_field(form.product_version_new, size=50) }}
 
             <tr class="submit">
                 <td></td>
