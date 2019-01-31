@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms.fields import StringField, PasswordField, BooleanField, SubmitField
+from wtforms.fields import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo, url, ValidationError
 from ReqHandler.module_file.models import User, Product
 
@@ -52,3 +52,8 @@ class SignupForm(Form):
 
 class ExportForm(Form):
     filename = StringField('Enter file name: ', validators=[DataRequired(), Length(0, 100)])
+
+
+class BaselineForm(Form):
+    description = StringField('Enter baseline description: ', validators=[DataRequired(), Length(1, 1000)])
+

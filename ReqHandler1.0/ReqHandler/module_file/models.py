@@ -7,6 +7,10 @@ association_table = db.Table('association',
                              db.Column('Requirement_nid', db.Integer, db.ForeignKey('requirement.nid')),
                              db.Column('ProductVersion_version', db.Float, db.ForeignKey('product.version')))
 
+baseline_table = db.Table('baseline_association',
+                          db.Column('Baseline_id', db.Integer, db.ForeignKey('baseline.id')),
+                          db.Column('Requirement_id', db.Float, db.ForeignKey('requirement.id')))
+
 
 class Requirement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,6 +35,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120))
     requirements = db.relationship('Requirement', backref='user', lazy='dynamic')
     product_versions = db.relationship('Product', backref='user', lazy='dynamic')
+    baselines = db.relationship('Baseline', backref='user', lazy='dynamic')
     password_hash = db.Column(db.String)
 
     @property
@@ -67,3 +72,15 @@ class Product(db.Model):
 
     def __repr__(self):
         return "v{}".format(self.version)
+
+
+class Baseline(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.String, db.ForeignKey('user.username'))
+    description = db.Column(db.String(1000))
+    time = db.Column(db.DateTime, default=datetime.utcnow)
+    requirements = db.relationship('Requirement', secondary=baseline_table,
+                                   backref=db.backref('requirements', lazy='dynamic'))
+
+    def __repr__(self):
+        return "Baseline id:{}, created:{}".format(self.id, self.time)

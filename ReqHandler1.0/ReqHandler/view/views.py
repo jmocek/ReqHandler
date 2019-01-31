@@ -1,10 +1,10 @@
 from flask import render_template, request, flash, redirect, url_for, send_from_directory
 from ReqHandler import login_manager
-from ReqHandler.view.form import RequirementAddForm, LoginForm, SignupForm, ExportForm
+from ReqHandler.view.form import RequirementAddForm, LoginForm, SignupForm, ExportForm, BaselineForm
 from flask_login import login_required, login_user, logout_user
 from werkzeug.utils import secure_filename
 from ReqHandler.view.view_support import *
-from ReqHandler.module_file.models import Requirement, User, Product
+from ReqHandler.module_file.models import Requirement, User, Product, Baseline
 import os
 
 
@@ -121,9 +121,16 @@ def edit(nid_id):
                                          links=None,
                                          author=current_user,
                                          is_removed=None)
-        dbinput.add_req()
-        flash("Stored '{}'".format(text))
-        return redirect(url_for('user', username=current_user.username))
+
+        if dbinput.check_edit():
+            dbinput.add_req()
+            flash("Stored '{}'".format(text))
+            return redirect(url_for('user', username=current_user.username))
+        else:
+            flash("No change detected.")
+            return render_template('edit.html', requirement=requirement, form=form, products=existing_products,
+                                   reqs=reqs)
+
     return render_template('edit.html', requirement=requirement, form=form, products=existing_products, reqs=reqs)
 
 
@@ -238,3 +245,23 @@ def import_file(filename):
             return redirect(url_for('req'))
 
     return render_template('import.html')
+
+
+@app.route('/baseline', methods=['GET', 'POST'])
+@login_required
+def baseline():
+    base2 = create_baseline_forms()
+    baselineform = base2()
+    if baselineform.validate_on_submit():
+        description = baselineform.description.data
+        product_version = baselineform.product_version.data
+        baseline = Baseline()
+        baseline.author = current_user.username
+        baseline.description = description
+        db.session.add(baseline)
+        db.session.commit()
+        amend_reqs(product_version, baseline)
+        flash("Stored '{}' baseline".format(description))
+        return redirect(url_for('index'))
+    return render_template('baseline.html', baselineform=baselineform)
+

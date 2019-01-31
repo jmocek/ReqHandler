@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% from "form_macros.html" import render_field %}
+{% from "form_macros.html" import render_req %}
+
+{% block title %}
+Create baseline
+{%  endblock %}
+
+{% block content %}
+<section>
+    <h1>Create product version base baseline</h1>
+
+    <form action="" method="post">
+        {{baselineform.hidden_tag()}}
+        <table>
+            {{ render_field(baselineform.description, size=50) }}
+                <td>Choose product version:</td>
+                {{ render_field(baselineform.product_version) }}
+
+            <tr class="submit">
+                <td></td>
+                <td>
+                    <button type="submit">Submit</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    </form>
+</section>
+{% endblock %}
+
+{% block sidebar %}
+{% endblock %}

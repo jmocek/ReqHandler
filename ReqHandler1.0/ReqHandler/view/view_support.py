@@ -6,8 +6,8 @@ import csv
 from sqlalchemy.sql.expression import func
 from ReqHandler.module_file.models import Requirement, User, Product
 import os
-from ReqHandler.view.form import RequirementAddForm
-from wtforms.fields import StringField, PasswordField, BooleanField, SubmitField
+from ReqHandler.view.form import RequirementAddForm, BaselineForm
+from wtforms.fields import StringField, PasswordField, BooleanField, SubmitField, SelectField
 
 
 class DataBaseInputGenerator:
@@ -66,6 +66,28 @@ class DataBaseInputGenerator:
             requirement.product_version.append(pv)
             db.session.commit()
 
+    def check_edit(self):
+        new_text = self._text
+        new_products = self._product_versions
+        print("new text, new products:", new_text, new_products)
+        # here will land other comparisons
+        version = self._version - 1
+        old_requirement = Requirement.query.filter_by(nid=self._nid).filter_by(version=version).first()
+        old_text = old_requirement.text
+        old_products_v = old_requirement.product_version
+        old_products = []
+        for product in old_products_v:
+            old_products.append(product.version)
+        print("old text, old products:", old_text, old_products)
+
+        if new_text == old_text and new_products == old_products:
+            return False
+        # elif new_text == old_text and new_products != old_products:
+        #     return True
+        # elif new_text != old_text and new_products == old_products:
+        #     return True
+        else:
+            return True
 
 def export_file():
     """
@@ -233,3 +255,33 @@ def create_product_forms():
         existing_products.append(name)
 
     return Add, existing_products
+
+
+def create_baseline_forms():
+    class Add(BaselineForm):
+        pass
+
+    versions = []
+    for product in Product.query.all():
+        version = (product.version, product)
+        print(version)
+        versions.append(version)
+
+    print(versions)
+    setattr(Add, "product_version", SelectField('Baseline product version', coerce=float, choices=versions))
+
+    return Add
+
+
+def amend_reqs(version, baseline):
+    print("pv", version)
+    pversion = Product.query.filter_by(version=version).first()
+    print("pv", pversion)
+    for req in Requirement.query.filter_by(is_removed=False)\
+            .filter(Requirement.product_version.contains(pversion)).all():
+
+        print(req)
+        baseline.requirements.append(req)
+        db.session.commit()
+    print("reqi: ", baseline.requirements)
+
