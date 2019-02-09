@@ -1,8 +1,0 @@
-nid,version,text,author,product versions,baseline,time,links,isremoved
-1,1,It shall be possible to use application on Firefox 64 or higher.,mocek,0.1+0.2,undefined,2019-01-25 13:25:56.537868,not+yet+implemented,False
-2,1,It shall be possible to use application on Firefox 64 or higher.,mocek,,undefined,2019-01-25 13:26:04.132856,not+yet+implemented,True
-3,1,It shall be possible to use application on Firefox 64 or higher.,mocek,0.3,undefined,2019-01-25 13:26:39.402859,not+yet+implemented,False
-4,1,sfqef,mocek,0.1,undefined,2019-01-25 13:35:13.732167,not+yet+implemented,False
-5,1,It shall be possible to use application on Firefox 64 or higher.,mocek,0.1,undefined,2019-01-25 13:44:23.584408,not+yet+implemented,False
-5,2,It shall be possible to use application on Firefox 64 or higher.,mocek,0.1,undefined,2019-01-25 13:48:22.306866,not+yet+implemented,False
-1,2,It shall be possible to use application on Firefox 64 or higher.,mocek,0.1+0.2,undefined,2019-01-26 14:25:10.733784,not+yet+implemented,False

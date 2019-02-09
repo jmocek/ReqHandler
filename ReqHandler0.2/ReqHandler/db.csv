@@ -1,0 +1,75 @@
+nid,version,text,author,product versions,baseline,time,links,isremoved
+1,2,It shall be possible to use application on Firefox 64 or higher.,jmocek,0.1+0.2,undefined,2019-02-02 12:04:05.647063,not+yet+implemented,False
+2,2,It shall be possible to use application on Chrome 71 or higher.,jmocek,0.1+0.2,undefined,2019-02-02 12:04:36.232503,not+yet+implemented,False
+3,2,It shall be possible to use application on Edge 44 or higher.,jmocek,0.1+0.2,undefined,2019-02-02 12:04:46.607880,not+yet+implemented,False
+4,2,It shall be possible to use application on IE 11 or higher.,jmocek,0.1+0.2,undefined,2019-02-02 12:04:56.559961,not+yet+implemented,False
+5,2,It shall be possible to install application on https://www.pythonanywhere.com/.,jmocek,0.1+0.2,undefined,2019-02-02 12:05:14.486005,not+yet+implemented,False
+6,1,Application should be delivered with predefined administrator account.,jmocek,0.2,undefined,2019-02-02 12:03:45.035215,not+yet+implemented,False
+7,1,"It shall be possible to define user role. Available roles are: admin, user.",jmocek,0.2,undefined,2019-02-02 12:03:45.069239,not+yet+implemented,False
+8,2,It shall be possible to create an user account.,jmocek,0.1+0.2,undefined,2019-02-02 12:06:17.767725,not+yet+implemented,False
+9,2,Application should include 'Sing up' page.,jmocek,0.1+0.2,undefined,2019-02-02 12:06:33.821657,not+yet+implemented,False
+10,2,If an account is created then user pressed 'Submit' button.,jmocek,0.1+0.2,undefined,2019-02-02 12:07:00.903200,not+yet+implemented,False
+11,2,If an account is created then all text boxes are filled up.,jmocek,0.1+0.2,undefined,2019-02-02 12:05:34.873652,not+yet+implemented,False
+12,2,If an account is created then passed 'Username' does not exceed 60 characters.,jmocek,0.1+0.2,undefined,2019-02-02 12:05:40.846522,not+yet+implemented,False
+13,2,If an account is created then passed 'Username' is unique.,jmocek,0.1+0.2,undefined,2019-02-02 12:05:48.191745,not+yet+implemented,False
+14,2,If an account is created then passed 'Email' adress does not exceed 120 charactes.,jmocek,0.1+0.2,undefined,2019-02-02 12:05:53.565587,not+yet+implemented,False
+15,2,If an account is created then passed 'Email' address is unique.,jmocek,0.1+0.2,undefined,2019-02-02 12:05:59.758900,not+yet+implemented,False
+16,2,If an account is created then passed 'Password' matches 'Password confirmation',jmocek,0.1+0.2,undefined,2019-02-02 12:06:05.278844,not+yet+implemented,False
+17,2,Password for each user should be stored as a hash.,jmocek,0.1+0.2,undefined,2019-02-02 12:07:13.965489,not+yet+implemented,False
+18,2,When an invalid username is passed OR invalid email is passed OR passed password and password confirmation does not match AND submit button is pressed then application shall point out which field is not filled up correctly.,jmocek,0.1+0.2,undefined,2019-02-02 12:19:50.902738,not+yet+implemented,False
+19,2,Application should include 'Log in' page.,jmocek,0.1+0.2,undefined,2019-02-02 12:19:56.688834,not+yet+implemented,False
+20,2,It shall be possible for user to log in.,jmocek,0.1+0.2,undefined,2019-02-02 12:20:04.247340,not+yet+implemented,False
+21,1,It shall be possible for administrator to log in.,jmocek,0.2,undefined,2019-02-02 12:03:45.553584,not+yet+implemented,False
+22,2,If user OR administrator is logged in then 'Log In' button was pressed.,jmocek,0.1+0.2,undefined,2019-02-02 12:20:11.639616,not+yet+implemented,False
+23,2,If an user OR administrator is logged in then passed username exist in database.,jmocek,0.1+0.2,undefined,2019-02-02 12:20:21.078329,not+yet+implemented,False
+24,2,When incorrect password OR incorrect username is passed to form AND 'Log in' button is pressed then an information that incorrect password or incorrect user was passed should be flashed on page.,jmocek,0.1+0.2,undefined,2019-02-02 12:20:26.745341,not+yet+implemented,False
+25,2,If an user OR administrator is logged in then passed password is correct.,jmocek,0.1+0.2,undefined,2019-02-02 12:20:31.198508,not+yet+implemented,False
+26,2,Login page should include 'Keep me logged in' checkbox.,jmocek,0.1+0.2,undefined,2019-02-02 12:20:43.037947,not+yet+implemented,False
+27,2,When an account is created then its data is stored in database.,jmocek,0.1+0.2,undefined,2019-02-02 12:20:48.159160,not+yet+implemented,False
+28,2,Application should include 'Add requirement' page.,jmocek,0.1+0.2,undefined,2019-02-02 12:21:01.141162,not+yet+implemented,False
+29,2,If a requirement is added to database then 'Submit' button was pressed.,jmocek,0.1+0.2,undefined,2019-02-02 12:21:07.058633,not+yet+implemented,False
+30,2,If a requirement is added to database then all required data was passed.,jmocek,0.1+0.2,undefined,2019-02-02 12:21:13.991545,not+yet+implemented,False
+31,2,If a requirement is added then its length does not exceed 1000 characters.,jmocek,0.1+0.2,undefined,2019-02-02 12:21:19.849709,not+yet+implemented,False
+32,2,If a requirement is added then passed product version is of type double.,jmocek,0.1+0.2,undefined,2019-02-02 12:21:23.398234,not+yet+implemented,False
+33,2,When passed 'Requirement text' exceeds 1000 characters then it should be pointed out by the application.,jmocek,0.1+0.2,undefined,2019-02-02 12:21:28.775530,not+yet+implemented,False
+34,2,When passed 'Product version' is nt of type double then it should be pointed out by the application.,jmocek,0.1+0.2,undefined,2019-02-02 12:21:35.251117,not+yet+implemented,False
+35,2,When requirement is added correctly then it should flashed by the application.,jmocek,0.1+0.2,undefined,2019-02-02 12:21:46.494783,not+yet+implemented,False
+36,2,Application should include 'Show requirements' page.,jmocek,0.1+0.2,undefined,2019-02-02 12:21:55.392110,not+yet+implemented,False
+37,2,"Application should show requirements NID, Version, Text, Added and Product version of each requirement in Show requirements page.",jmocek,0.1+0.2,undefined,2019-02-02 12:22:12.336592,not+yet+implemented,False
+38,2,It shall be possible to edit existing requirement.,jmocek,0.1+0.2,undefined,2019-02-02 12:22:16.789741,not+yet+implemented,False
+39,2,If a requirement is edited in database then 'Submit' button was pressed.,jmocek,0.1+0.2,undefined,2019-02-02 12:22:22.184575,not+yet+implemented,False
+40,2,If a requirement is edited in database then all required data was passed.,jmocek,0.1+0.2,undefined,2019-02-02 12:22:27.113724,not+yet+implemented,False
+41,2,If a requirement is edited then its length does not exceed 1000 characters.,jmocek,0.1+0.2,undefined,2019-02-02 12:22:31.770036,not+yet+implemented,False
+42,2,If a requirement is edited then passed product version is of type double.,jmocek,0.1+0.2,undefined,2019-02-02 12:22:36.239234,not+yet+implemented,False
+43,2,It shall be possible to remove existing requirement.,jmocek,0.1+0.2,undefined,2019-02-02 12:22:41.935264,not+yet+implemented,False
+44,2,If a requirement is removed then it was confirmed by the user.,jmocek,0.1+0.2,undefined,2019-02-02 12:22:50.262801,not+yet+implemented,False
+45,2,Application should include 'My reqs' page.,jmocek,0.1+0.2,undefined,2019-02-02 12:23:07.337522,not+yet+implemented,False
+46,2,If a requirement is included in 'My reqs' page then its author is logged in.,jmocek,0.1+0.2,undefined,2019-02-02 12:23:17.187527,not+yet+implemented,False
+47,2,It shall be possible to export requirement database to csv file.,jmocek,0.1+0.2,undefined,2019-02-02 12:23:21.222397,not+yet+implemented,False
+48,2,It shall be possible to import database from CSV file.,jmocek,0.1+0.2,undefined,2019-02-02 12:23:25.173204,not+yet+implemented,False
+49,2,It shall be possible to log out from each page.,jmocek,0.1+0.2,undefined,2019-02-02 12:23:30.159334,not+yet+implemented,False
+50,2,If database is imported from CSV file then it is defined according to [ref1],jmocek,0.1+0.2,undefined,2019-02-02 12:23:45.617641,not+yet+implemented,False
+51,2,Application should follow 'Application architecture' [ref2],jmocek,0.1+0.2,undefined,2019-02-02 12:23:53.320121,not+yet+implemented,False
+52,2,It shall be possible to assign requirement to at least one product version.,jmocek,0.1+0.2,undefined,2019-02-02 12:23:57.911402,not+yet+implemented,False
+53,1,It shall be possible to create a requirements baseline.,jmocek,0.2,undefined,2019-02-02 12:03:46.391180,not+yet+implemented,False
+54,1,If a baseline is created then it consist of all requirements valid for chosen product version.,jmocek,0.2,undefined,2019-02-02 12:03:46.418200,not+yet+implemented,False
+55,1,Is shall be possible for the application to show baselines in 'Show requirements' page.,jmocek,0.2,undefined,2019-02-02 12:03:46.444236,not+yet+implemented,False
+56,2,If a baseline is created then 'baseline descritpion' is filled up.,jmocek,0.2,undefined,2019-02-04 15:37:05.745375,not+yet+implemented,False
+57,2,It shall be possible for an administrator to create requirements modules.,jmocek,0.3,undefined,2019-02-04 15:29:54.262543,not+yet+implemented,False
+58,1,"It shall be possible to filter requirement in 'show requirements' page by author, creation date, module, product version and nid.",jmocek,0.3,undefined,2019-02-04 15:29:43.422834,not+yet+implemented,False
+59,1,If a requirement is removed then it is not visible in 'show requirements' page.,jmocek,0.1+0.2+0.3,undefined,2019-02-04 15:31:19.709612,not+yet+implemented,False
+60,1,If a requirement is edited then its previous version is not visible in 'Show requirements' page.,jmocek,0.1+0.2+0.3,undefined,2019-02-04 15:32:27.045753,not+yet+implemented,False
+61,1,It shall be possible to restore previous version of requirement from 'edit' page.,jmocek,0.3,undefined,2019-02-04 15:32:57.470960,not+yet+implemented,False
+62,1,When database is exported then the output file cointans data as shown in 'show requirements' page.,jmocek,0.3,undefined,2019-02-04 15:34:07.643825,not+yet+implemented,False
+63,1,It shall be possible for an administrator to attach submodels to existing modules/,jmocek,0.3,undefined,2019-02-04 15:35:00.774862,not+yet+implemented,False
+64,1,If new user is created then it is confirmed by the administrator.,jmocek,0.3,undefined,2019-02-04 15:36:09.990183,not+yet+implemented,False
+65,1,It shall be possible to search the database within 'show requirements'.,jmocek,0.3,undefined,2019-02-04 15:39:48.114400,not+yet+implemented,False
+66,1,If new requirement is created then its creation date is save in UTC time.,jmocek,0.1+0.2+0.3,undefined,2019-02-04 15:40:56.726469,not+yet+implemented,False
+67,1,If requirement is updated then its creation date is save in UTC time.,jmocek,0.1+0.2+0.3,undefined,2019-02-04 15:41:29.264311,not+yet+implemented,False
+68,1,When database is imported from CSV file then an author for each of imported requirement is set to current user.,jmocek,0.1+0.2+0.3,undefined,2019-02-04 15:43:04.113171,not+yet+implemented,False
+69,1,When database is imported from CSV file then creation time for each of imported requirements is set to current UTC time.,jmocek,0.1+0.2+0.3,undefined,2019-02-04 15:43:43.289610,not+yet+implemented,False
+70,1,Application should provide logs in human readable format.,jmocek,0.3,undefined,2019-02-04 15:47:18.779763,not+yet+implemented,False
+71,1,Application should log informations according to Log schema [ref.3],jmocek,0.3,undefined,2019-02-04 15:48:27.112783,not+yet+implemented,False
+72,1,It shall be possible for an administrator to clear database.,jmocek,0.3,undefined,2019-02-04 15:48:59.647853,not+yet+implemented,False
+73,1,Application log file should be closed after each new line is added.,jmocek,0.3,undefined,2019-02-04 15:50:47.215296,not+yet+implemented,False
+74,1,Application database shall be handled with SQLite database management system.,jmocek,0.3,undefined,2019-02-04 15:52:33.367714,not+yet+implemented,False
